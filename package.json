@@ -1,0 +1,50 @@
+{
+  "name": "commercejs-nuxt-acheckout",
+  "version": "1.0.0",
+  "description": "Nuxt demo; Checkout with Commerce.js SDK",
+  "author": "Elijah Kotyluk",
+  "private": true,
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
+    "build": "nuxt build",
+    "start": "cross-env NODE_ENV=production node server/index.js",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "test": "jest",
+    "heroku-postbuild": "npm run build"
+  },
+  "lint-staged": {
+    "*.{js,vue}": "yarn lint"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "dependencies": {
+    "@chec/commerce.js": "^2.0.1",
+    "@nuxtjs/dotenv": "^1.4.0",
+    "cross-env": "^5.2.0",
+    "express": "^4.16.4",
+    "nuxt": "^2.0.0",
+    "vuetify": "^2.2.15"
+  },
+  "devDependencies": {
+    "@mdi/font": "4.9.95",
+    "@nuxtjs/eslint-config": "^2.0.0",
+    "@nuxtjs/eslint-module": "^1.0.0",
+    "@vue/test-utils": "^1.0.0-beta.27",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^24.1.0",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-nuxt": ">=0.4.2",
+    "eslint-plugin-prettier": "^3.1.2",
+    "husky": "^4.0.0",
+    "jest": "^24.1.0",
+    "lint-staged": "^10.0.0",
+    "nodemon": "^1.18.9",
+    "prettier": "^1.19.1",
+    "vue-jest": "^4.0.0-0"
+  }
+}
