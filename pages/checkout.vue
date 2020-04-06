@@ -1,69 +1,14 @@
 <template>
-  <v-card>
-    <v-card-title primary-title>
-      Billing Details
-    </v-card-title>
-    <v-row>
-      <v-col>
-        <v-form class="px-5">
-          <v-row>
-            <v-col>
-              <v-text-field
-                name="firstName"
-                label="First Name"
-                outlined
-                :rules="[rules.required]"
-              ></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field
-                name="lastName"
-                label="Last Name"
-                outlined
-                :rules="[rules.required]"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-text-field
-            name="phone"
-            label="Phone #"
-            outlined
-            :rules="[rules.required]"
-          ></v-text-field>
-          <v-text-field
-            name="email"
-            label="Email"
-            outlined
-            :rules="[rules.required, rules.email]"
-          ></v-text-field>
-          <v-text-field
-            name="address"
-            label="Street Address"
-            outlined
-            :rules="[rules.required]"
-          ></v-text-field>
-          <v-text-field
-            name="city"
-            label="City"
-            outlined
-            :rules="[rules.required]"
-          ></v-text-field>
-          <v-text-field
-            name="state"
-            label="State"
-            outlined
-            :rules="[rules.required]"
-          ></v-text-field>
-          <v-text-field
-            name="zip"
-            label="Zip Code"
-            outlined
-            :rules="[rules.required]"
-          ></v-text-field>
-        </v-form>
+  <v-card elevation="0">
+    <v-row align="center" justify="space-around">
+      <v-col cols="12" sm="7" lg="5">
+        <v-card-title primary-title>
+          Billing Details
+        </v-card-title>
+        <billing-details />
       </v-col>
-      <v-col>
-        <v-card max-width="500">
+      <v-col cols="12" sm="5">
+        <v-card max-width="400">
           <v-card-title>Order Summary</v-card-title>
           <v-container class="px-3">
             <v-row justify="space-between">
@@ -110,7 +55,12 @@
 </template>
 
 <script>
+import BillingDetails from '~/components/BillingDetails'
+
 export default {
+  components: {
+    BillingDetails
+  },
   data: () => ({
     items: [
       {
@@ -121,14 +71,7 @@ export default {
         name: 'item-2',
         price: '$8.99'
       }
-    ],
-    rules: {
-      email: (v) => {
-        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        return pattern.test(v) || 'Invalid e-mail.'
-      },
-      required: (v) => !!v || 'Required'
-    }
+    ]
   })
 }
 </script>
