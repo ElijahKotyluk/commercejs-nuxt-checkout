@@ -5,272 +5,239 @@ export const locale = {
     states: [
       {
         name: 'Alabama',
-        value: 'AL'
+        code: 'AL'
       },
       {
         name: 'Alaska',
-        value: 'AK'
+        code: 'AK'
       },
       {
         name: 'American Samoa',
-        value: 'AS'
+        code: 'AS'
       },
       {
         name: 'Arizona',
-        value: 'AZ'
+        code: 'AZ'
       },
       {
         name: 'Arkansas',
-        value: 'AR'
+        code: 'AR'
       },
       {
         name: 'California',
-        value: 'CA'
+        code: 'CA'
       },
       {
         name: 'Colorado',
-        value: 'CO'
+        code: 'CO'
       },
       {
         name: 'Connecticut',
-        value: 'CT'
+        code: 'CT'
       },
       {
         name: 'Delaware',
-        value: 'DE'
+        code: 'DE'
       },
       {
         name: 'District Of Columbia',
-        value: 'DC'
+        code: 'DC'
       },
       {
         name: 'Federated States Of Micronesia',
-        value: 'FM'
+        code: 'FM'
       },
       {
         name: 'Florida',
-        value: 'FL'
+        code: 'FL'
       },
       {
         name: 'Georgia',
-        value: 'GA'
+        code: 'GA'
       },
       {
         name: 'Guam',
-        value: 'GU'
+        code: 'GU'
       },
       {
         name: 'Hawaii',
-        value: 'HI'
+        code: 'HI'
       },
       {
         name: 'Idaho',
-        value: 'ID'
+        code: 'ID'
       },
       {
         name: 'Illinois',
-        value: 'IL'
+        code: 'IL'
       },
       {
         name: 'Indiana',
-        value: 'IN'
+        code: 'IN'
       },
       {
         name: 'Iowa',
-        value: 'IA'
+        code: 'IA'
       },
       {
         name: 'Kansas',
-        value: 'KS'
+        code: 'KS'
       },
       {
         name: 'Kentucky',
-        value: 'KY'
+        code: 'KY'
       },
       {
         name: 'Louisiana',
-        value: 'LA'
+        code: 'LA'
       },
       {
         name: 'Maine',
-        value: 'ME'
+        code: 'ME'
       },
       {
         name: 'Marshall Islands',
-        value: 'MH'
+        code: 'MH'
       },
       {
         name: 'Maryland',
-        value: 'MD'
+        code: 'MD'
       },
       {
         name: 'Massachusetts',
-        value: 'MA'
+        code: 'MA'
       },
       {
         name: 'Michigan',
-        value: 'MI'
+        code: 'MI'
       },
       {
         name: 'Minnesota',
-        value: 'MN'
+        code: 'MN'
       },
       {
         name: 'Mississippi',
-        value: 'MS'
+        code: 'MS'
       },
       {
         name: 'Missouri',
-        value: 'MO'
+        code: 'MO'
       },
       {
         name: 'Montana',
-        value: 'MT'
+        code: 'MT'
       },
       {
         name: 'Nebraska',
-        value: 'NE'
+        code: 'NE'
       },
       {
         name: 'Nevada',
-        value: 'NV'
+        code: 'NV'
       },
       {
         name: 'New Hampshire',
-        value: 'NH'
+        code: 'NH'
       },
       {
         name: 'New Jersey',
-        value: 'NJ'
+        code: 'NJ'
       },
       {
         name: 'New Mexico',
-        value: 'NM'
+        code: 'NM'
       },
       {
         name: 'New York',
-        value: 'NY'
+        code: 'NY'
       },
       {
         name: 'North Carolina',
-        value: 'NC'
+        code: 'NC'
       },
       {
         name: 'North Dakota',
-        value: 'ND'
+        code: 'ND'
       },
       {
         name: 'Northern Mariana Islands',
-        value: 'MP'
+        code: 'MP'
       },
       {
         name: 'Ohio',
-        value: 'OH'
+        code: 'OH'
       },
       {
         name: 'Oklahoma',
-        value: 'OK'
+        code: 'OK'
       },
       {
         name: 'Oregon',
-        text: 'Oregon',
-        value: 'OR'
+        code: 'OR'
       },
       {
-
         name: 'Palau',
-        text: 'Palau',
-        value: 'PW'
+        code: 'PW'
       },
       {
-
         name: 'Pennsylvania',
-        text: 'Pennsylvania',
-        value: 'PA'
+        code: 'PA'
       },
       {
-
         name: 'Puerto Rico',
-        text: 'Puerto Rico',
-        value: 'PR'
+        code: 'PR'
       },
       {
-
         name: 'Rhode Island',
-        text: 'Rhode Island',
-        value: 'RI'
+        code: 'RI'
       },
       {
-
         name: 'South Carolina',
-        text: 'South Carolina',
-        value: 'SC'
+        code: 'SC'
       },
       {
-
         name: 'South Dakota',
-        text: 'South Dakota',
-        value: 'SD'
+        code: 'SD'
       },
       {
-
         name: 'Tennessee',
-        text: 'Tennessee',
-        value: 'TN'
+        code: 'TN'
       },
       {
-
         name: 'Texas',
-        text: 'Texas',
-        value: 'TX'
+        code: 'TX'
       },
       {
-
         name: 'Utah',
-        text: 'Utah',
-        value: 'UT'
+        code: 'UT'
       },
       {
-
         name: 'Vermont',
-        text: 'Vermont',
-        value: 'VT'
+        code: 'VT'
       },
       {
-
         name: 'Virgin Islands',
-        text: 'Virgin Islands',
-        value: 'VI'
+        code: 'VI'
       },
       {
-
         name: 'Virginia',
-        text: 'Virginia',
-        value: 'VA'
+        code: 'VA'
       },
       {
-
         name: 'Washington',
-        text: 'Washington',
-        value: 'WA'
+        code: 'WA'
       },
       {
-
         name: 'West Virginia',
-        text: 'West Virginia',
-        value: 'WV'
+        code: 'WV'
       },
       {
-
         name: 'Wisconsin',
-        text: 'Wisconsin',
-        value: 'WI'
+        code: 'WI'
       },
       {
-
         name: 'Wyoming',
-        text: 'Wyoming',
-        value: 'WY'
+        code: 'WY'
       }
     ]
   },
