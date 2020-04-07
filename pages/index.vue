@@ -16,7 +16,7 @@
 
       <v-row>
         <template v-for="product in products">
-          <v-col :key="product.id" class="mt-5">
+          <v-col :key="product.id" class="mt-5" cols="12" sm="6" md="4">
             <commerce-item :key="product.id" :product="product" />
           </v-col>
         </template>

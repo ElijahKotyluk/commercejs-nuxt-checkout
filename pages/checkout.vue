@@ -9,26 +9,26 @@
       </v-col>
       <v-col cols="12" sm="5">
         <v-card max-width="400">
-          <v-card-title>Order Summary</v-card-title>
-          <v-container class="px-3">
+          <v-card-title class="pb-0">Order Summary</v-card-title>
+          <v-container>
             <v-row justify="space-between">
-              <v-card-subtitle class="title">Product</v-card-subtitle>
-              <v-card-subtitle class="title">Subtotal</v-card-subtitle>
-            </v-row>
-            <v-container>
-              <v-row
-                v-for="item in items"
-                :key="item.name"
-                justify="space-between"
+              <v-card-subtitle class="title py-1 pl-3">Product</v-card-subtitle>
+              <v-card-subtitle class="title py-1 pr-3"
+                >Subtotal</v-card-subtitle
               >
-                <v-card-subtitle :key="item.name">{{
-                  item.name
-                }}</v-card-subtitle>
-                <v-card-subtitle :key="item.price">{{
-                  item.price
-                }}</v-card-subtitle>
-              </v-row>
-            </v-container>
+            </v-row>
+            <v-row
+              v-for="item in cart.line_items"
+              :key="item.id"
+              justify="space-between"
+            >
+              <v-card-subtitle :key="item.name">{{
+                item.name
+              }}</v-card-subtitle>
+              <v-card-subtitle :key="item.price.formatted"
+                >${{ item.price.formatted }}</v-card-subtitle
+              >
+            </v-row>
             <v-divider></v-divider>
             <v-row justify="space-between">
               <v-card-subtitle>Subtotal</v-card-subtitle>
@@ -55,23 +55,17 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import BillingDetails from '~/components/BillingDetails'
 
 export default {
   components: {
     BillingDetails
   },
-  data: () => ({
-    items: [
-      {
-        name: 'item-1',
-        price: '$10.99'
-      },
-      {
-        name: 'item-2',
-        price: '$8.99'
-      }
-    ]
-  })
+  computed: {
+    ...mapGetters({
+      cart: 'cart'
+    })
+  }
 }
 </script>
