@@ -1,5 +1,5 @@
-export const locale = {
-  usa: {
+const locale = [
+  {
     name: 'United States',
     code: 'US',
     states: [
@@ -241,7 +241,7 @@ export const locale = {
       }
     ]
   },
-  canada: {
+  {
     name: 'Canada',
     code: 'CA',
     states: [
@@ -296,140 +296,143 @@ export const locale = {
       {
         name: 'Yukon',
         code: 'YT'
-      }]
+      }
+    ]
   },
-  mexico: {
+  {
     name: 'Mexico',
     code: 'MX',
     states: [
       {
-        state: 'Distrito Federal',
-        code: 'MX-DIF',
+        name: 'Distrito Federal',
+        code: 'MX-DIF'
       },
       {
-        state: 'Aguascalientes',
-        code: 'MX-AGU',
+        name: 'Aguascalientes',
+        code: 'MX-AGU'
       },
       {
-        state: 'Baja California',
-        code: 'MX-BCN',
+        name: 'Baja California',
+        code: 'MX-BCN'
       },
       {
-        state: 'Baja California Sur',
-        code: 'MX-BCS',
+        name: 'Baja California Sur',
+        code: 'MX-BCS'
       },
       {
-        state: 'Campeche',
-        code: 'MX-CAM',
+        name: 'Campeche',
+        code: 'MX-CAM'
       },
       {
-        state: 'Chiapas',
-        code: 'MX-CHP',
+        name: 'Chiapas',
+        code: 'MX-CHP'
       },
       {
-        state: 'Chihuahua',
-        code: 'MX-CHH',
+        name: 'Chihuahua',
+        code: 'MX-CHH'
       },
       {
-        state: 'Coahuila',
-        code: 'MX-COA',
+        name: 'Coahuila',
+        code: 'MX-COA'
       },
       {
-        state: 'Colima',
-        code: 'MX-COL',
+        name: 'Colima',
+        code: 'MX-COL'
       },
       {
-        state: 'Durango',
-        code: 'MX-DUR',
+        name: 'Durango',
+        code: 'MX-DUR'
       },
       {
-        state: 'Guanajuato',
-        code: 'MX-GUA',
+        name: 'Guanajuato',
+        code: 'MX-GUA'
       },
       {
-        state: 'Guerrero',
-        code: 'MX-GRO',
+        name: 'Guerrero',
+        code: 'MX-GRO'
       },
       {
-        state: 'Hidalgo',
-        code: 'MX-HID',
+        name: 'Hidalgo',
+        code: 'MX-HID'
       },
       {
-        state: 'Jalisco',
-        code: 'MX-JAL',
+        name: 'Jalisco',
+        code: 'MX-JAL'
       },
       {
-        state: 'Michoacán',
-        code: 'MX-MIC',
+        name: 'Michoacán',
+        code: 'MX-MIC'
       },
       {
-        state: 'Morelos',
-        code: 'MX-MOR',
+        name: 'Morelos',
+        code: 'MX-MOR'
       },
       {
-        state: 'México',
-        code: 'MX-MEX',
+        name: 'México',
+        code: 'MX-MEX'
       },
       {
-        state: 'Nayarit',
-        code: 'MX-NAY',
+        name: 'Nayarit',
+        code: 'MX-NAY'
       },
       {
-        state: 'Nuevo León',
-        code: 'MX-NLE',
+        name: 'Nuevo León',
+        code: 'MX-NLE'
       },
       {
-        state: 'Oaxaca',
-        code: 'MX-OAX',
+        name: 'Oaxaca',
+        code: 'MX-OAX'
       },
       {
-        state: 'Puebla',
-        code: 'MX-PUE',
+        name: 'Puebla',
+        code: 'MX-PUE'
       },
       {
-        state: 'Querétaro',
-        code: 'MX-QUE',
+        name: 'Querétaro',
+        code: 'MX-QUE'
       },
       {
-        state: 'Quintana Roo',
-        code: 'MX-ROO',
+        name: 'Quintana Roo',
+        code: 'MX-ROO'
       },
       {
-        state: 'San Luis Potosí',
-        code: 'MX-SLP',
+        name: 'San Luis Potosí',
+        code: 'MX-SLP'
       },
       {
-        state: 'Sinaloa',
-        code: 'MX-SIN',
+        name: 'Sinaloa',
+        code: 'MX-SIN'
       },
       {
-        state: 'Sonora',
-        code: 'MX-SON',
+        name: 'Sonora',
+        code: 'MX-SON'
       },
       {
-        state: 'Tabasco',
-        code: 'MX-TAB',
+        name: 'Tabasco',
+        code: 'MX-TAB'
       },
       {
-        state: 'Tamaulipas',
-        code: 'MX-TAM',
+        name: 'Tamaulipas',
+        code: 'MX-TAM'
       },
       {
-        state: 'Tlaxcala',
-        code: 'MX-TLA',
+        name: 'Tlaxcala',
+        code: 'MX-TLA'
       },
       {
-        state: 'Veracruz',
-        code: 'MX-VER',
+        name: 'Veracruz',
+        code: 'MX-VER'
       },
       {
-        state: 'Yucatán',
-        code: 'MX-YUC',
+        name: 'Yucatán',
+        code: 'MX-YUC'
       },
       {
-        state: 'Zacatecas',
-        code: 'MX-ZAC',
+        name: 'Zacatecas',
+        code: 'MX-ZAC'
       }
     ]
   }
-}
+]
+
+export default locale
