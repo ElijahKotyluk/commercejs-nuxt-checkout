@@ -1,23 +1,20 @@
 import Vue from 'vue'
 
-const commerce = Vue.prototype.$commerce
+const v = Vue.prototype
 export const state = () => ({
   products: [],
-  cart: {}
+  cart: {},
+  token: {}
 })
 
 // Actions
 export const actions = {
   async nuxtServerInit({ dispatch }) {
-    const products = await dispatch('getProducts')
-
-    if (products) {
-      await dispatch('retrieveCart')
-    }
+    return await dispatch('getProducts')
   },
 
   async getProducts({ commit }) {
-    const products = await Vue.prototype.$commerce.products.list()
+    const products = await v.$commerce.products.list()
 
     if (products) {
       commit('setProducts', products.data)
@@ -25,15 +22,26 @@ export const actions = {
   },
 
   async retrieveCart({ commit }) {
-    const cart = await Vue.prototype.$commerce.cart.retrieve()
+    const cart = await v.$commerce.cart.retrieve()
 
     if (cart) {
       commit('setCart', cart)
     }
   },
 
+  async genCheckoutToken({ commit }, payload) {
+    const token = await v.$commerce.checkout.generateToken(payload, {
+      type: 'cart'
+    })
+
+    if (token) {
+      console.log('token, ', token)
+      commit('setToken', token)
+    }
+  },
+
   async addProductToCart({ commit }, { id, count }) {
-    const addProduct = await Vue.prototype.$commerce.cart.add(id, (count += 1))
+    const addProduct = await v.$commerce.cart.add(id, (count += 1))
 
     if (addProduct) {
       commit('setCart', addProduct.cart)
@@ -41,7 +49,7 @@ export const actions = {
   },
 
   async removeProductFromCart({ commit }, payload) {
-    const removeProduct = await Vue.prototype.$commerce.cart.remove(payload)
+    const removeProduct = await v.$commerce.cart.remove(payload)
 
     if (removeProduct) {
       commit('setCart', removeProduct.cart)
@@ -49,7 +57,7 @@ export const actions = {
   },
 
   async clearCart({ commit }) {
-    const clear = await Vue.prototype.$commerce.cart.empty()
+    const clear = await v.$commerce.cart.empty()
 
     if (clear) {
       commit('clearCart')
@@ -57,7 +65,7 @@ export const actions = {
   },
 
   async updateCart({ commit }, { id, quantity }) {
-    const update = await commerce.cart.update(id, quantity)
+    const update = await v.$commerce.cart.update(id, quantity)
 
     if (update) {
       commit('updateCart', update)
@@ -73,6 +81,10 @@ export const mutations = {
 
   setCart(state, payload) {
     state.cart = payload
+  },
+
+  setToken(state, payload) {
+    state.token = payload
   },
 
   addProductToCart(state, payload) {
@@ -110,5 +122,9 @@ export const getters = {
     if (state.cart.subtotal) {
       return state.cart.subtotal.formatted
     }
+  },
+
+  token(state) {
+    return state.token
   }
 }
