@@ -84,14 +84,15 @@
       </v-col>
       <v-col class="py-0">
         <v-select
-          v-model="state"
+          v-model="region"
           dense
           item-text="name"
           item-value="code"
-          label="State/Province/Territory"
-          name="state"
+          label="Region"
+          name="region"
           outlined
           :items="country.states"
+          :rules="[rules.required]"
         ></v-select>
       </v-col>
       <v-col class="py-0">
@@ -106,19 +107,39 @@
       </v-col>
     </v-row>
     <p class="title ml-3 mb-4">Payment Details</p>
-    <v-text-field v-model="cardNumber" label="Card #" outlined></v-text-field>
+    <v-text-field
+      v-model="cardNumber"
+      label="Card #"
+      outlined
+      :rules="[rules.required]"
+    ></v-text-field>
     <v-row>
       <v-col class="py-0">
-        <v-text-field v-model="expiryDate" label="Date" outlined></v-text-field>
+        <v-text-field
+          v-model="expiryDate"
+          label="Date"
+          outlined
+          :rules="[rules.required]"
+        ></v-text-field>
       </v-col>
       <v-col class="py-0">
-        <v-text-field v-model="cvv" label="CVV" outlined></v-text-field>
+        <v-text-field
+          v-model="cvc"
+          label="cvc"
+          outlined
+          :rules="[rules.required, rules.cvc]"
+        ></v-text-field>
       </v-col>
       <v-col class="py-0">
-        <v-text-field v-model="cardZip" label="Zip" outlined></v-text-field>
+        <v-text-field
+          v-model="cardZip"
+          label="Zip"
+          outlined
+          :rules="[rules.required, rules.zip]"
+        ></v-text-field>
       </v-col>
     </v-row>
-    <v-btn @click.native="printLocales"></v-btn>
+    <v-btn @click.native="submitOrder">Submit</v-btn>
   </v-form>
 </template>
 
@@ -130,7 +151,7 @@ export default {
   name: 'BillingDetails',
   props: {
     cart: {
-      type: () => Object,
+      type: Object,
       default: () => {}
     }
   },
@@ -143,20 +164,38 @@ export default {
     address: '',
     country: {},
     city: '',
-    state: '',
+    region: '',
     postalCode: '',
     cardNumber: '4242 4242 4242 4242',
     expiryDate: '01/2023',
-    cvv: '123',
+    cvc: '123',
     cardZip: '94103',
     rules: {
       email: (v) => {
         const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         return pattern.test(v) || 'Invalid e-mail.'
       },
-      required: (v) => !!v || 'Required',
+      required: (v) => !!v || 'Required.',
       zip: (v) => {
-        // const pattern = null
+        let pattern
+        switch (this.country.code) {
+          case 'US':
+            pattern = /^([0-9]{5})(?:[-\s]*([0-9]{4}))?$/
+            break
+          case 'CA':
+            pattern = /^[abceghjklmnprstvxy][0-9][abceghjklmnprstvwxyz]\s?[0-9][abceghjklmnprstvwxyz][0-9]$/i
+            break
+          case 'MX':
+            pattern = /^\\d{5}$/
+            break
+        }
+        return (
+          pattern.test(v) ||
+          `Invalid Zip Code for Country: ${this.country.code}`
+        )
+      },
+      cvc: (v) => {
+        return v.length === 3 || 'Invalid CVC code.'
       }
     }
   }),
@@ -167,14 +206,63 @@ export default {
   },
   methods: {
     shippingOpts(tokenID) {
-      console.log('id: ', tokenID)
       this.$commerce.checkout
         .getShippingOptions(tokenID, {
           country: this.country.code
         })
         .then((r) => {
-          console.log('r: ', r[0].price.formatted)
+          this.$emit('shippingCost', r[0].price.formatted)
+          this.shipMethod = r[0].id
         })
+    },
+    submitOrder() {
+      if (!this.$refs.billing.validate()) return // eslint-disable-line no-useless-return
+      const date = this.expiryDate.split('/')
+      const lineItems = {}
+
+      for (const i of this.cart.line_items) {
+        lineItems[i.id] = {
+          quantity: i.quantity
+        }
+      }
+      // Capture checkout data
+      const data = {
+        line_items: lineItems,
+        customer: {
+          firstname: this.firstName,
+          lastname: this.lastName,
+          email: this.email
+        },
+        shipping: {
+          name: `${this.firstName} ${this.lastName}`,
+          street: this.address,
+          town_city: this.city,
+          county_state: this.region,
+          postal_zip_code: this.postalCode,
+          country: this.country.code
+        },
+        fulfillment: {
+          shipping_method: this.shipMethod
+        },
+        payment: {
+          gateway: 'test_gateway',
+          card: {
+            number: this.cardNumber,
+            expiry_month: date[0],
+            expiry_year: date[1],
+            cvc: this.cvc,
+            postal_zip_code: this.cardZip
+          }
+        }
+      }
+
+      // make request
+      this.$commerce.checkout
+        .capture(this.token.id, data)
+        .then((r) => {
+          console.log('r: ', r)
+        })
+        .catch((e) => {})
     }
   }
 }
