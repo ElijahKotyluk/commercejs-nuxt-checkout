@@ -1,6 +1,13 @@
 <template>
   <v-app light>
     <v-content>
+      <v-toolbar>
+        <v-toolbar-title>
+          <a class="title toolbar-title" href="/">
+            Demo Merchant
+          </a>
+        </v-toolbar-title>
+      </v-toolbar>
       <v-container>
         <nuxt />
       </v-container>
@@ -15,3 +22,14 @@ export default {
   }
 }
 </script>
+
+<style>
+.toolbar-title {
+  color: #000000 !important;
+  text-decoration: none;
+}
+.toolbar-title:hover {
+  text-decoration: underline;
+  color: #797979 !important;
+}
+</style>
