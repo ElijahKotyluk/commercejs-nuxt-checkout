@@ -66,7 +66,14 @@
       <v-divider></v-divider>
 
       <v-list-item class="justify-center">
-        <v-btn color="green" class="white--text mt-10" to="/checkout" x-large>
+        <v-btn
+          color="green"
+          class="white--text mt-10"
+          :disabled="disabled"
+          to="/checkout"
+          x-large
+          @click="genToken(cart.id)"
+        >
           <v-icon small>mdi-lock</v-icon>
           <span>Secure Checkout</span>
         </v-btn>
@@ -94,10 +101,23 @@ export default {
     disabled: true,
     subtotal: '$0.00'
   }),
+  watch: {
+    cart: {
+      handler(val) {
+        console.log('val: ', val)
+        if (val.line_items.length >= 1) {
+          this.disabled = false
+        } else {
+          this.disabled = true
+        }
+      }
+    }
+  },
   methods: {
     ...mapActions({
       removeProduct: 'removeProductFromCart',
-      clearCart: 'clearCart'
+      clearCart: 'clearCart',
+      genToken: 'genCheckoutToken'
     })
   }
 }
