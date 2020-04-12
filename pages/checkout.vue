@@ -5,7 +5,12 @@
         <v-card-title primary-title>
           Billing Details
         </v-card-title>
-        <billing-details :cart="cart" @shippingCost="updateCost" />
+        <billing-details
+          :cart="cart"
+          @shippingCost="updateCost"
+          @orderComplete="handleOrderRes"
+          @orderError="handleOrderError"
+        />
       </v-col>
       <v-col cols="12" sm="5">
         <v-card max-width="400">
@@ -32,9 +37,10 @@
             <v-divider></v-divider>
             <v-row justify="space-between">
               <v-card-subtitle>Subtotal</v-card-subtitle>
-              <v-card-subtitle>{{
-                cart.subtotal.formatted_with_symbol || '$0.00'
+              <v-card-subtitle v-if="cart.subtotal">{{
+                cart.subtotal.formatted_with_symbol
               }}</v-card-subtitle>
+              <v-card-subtitle v-else>$0.00</v-card-subtitle>
             </v-row>
             <v-row justify="space-between">
               <v-card-subtitle>Shipping</v-card-subtitle>
@@ -52,6 +58,18 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <v-dialog v-model="dialog" width="500">
+      <v-card>
+        <v-card-title>Order Confirmation: {{ orderRef }}</v-card-title>
+        <v-card-text>
+          Thank you for your order!
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+    <v-snackbar v-model="snackbar" top vertical :timeout="timeout">
+      {{ orderError }}
+    </v-snackbar>
   </v-card>
 </template>
 
@@ -64,19 +82,44 @@ export default {
     BillingDetails
   },
   data: () => ({
-    shippingCost: '0.00'
+    dialog: false,
+    shippingCost: '0.00',
+    snackbar: false,
+    timeout: 8000,
+    orderNumber: '',
+    orderRef: '',
+    orderError: ''
   }),
   computed: {
     ...mapGetters({
       cart: 'cart'
     }),
     total() {
-      const total = +this.cart.subtotal.raw + +this.shippingCost
+      let total = '0.00'
+      if (this.cart.subtotal) {
+        total = +this.cart.subtotal.raw + +this.shippingCost
+      }
 
       return `$${total}`
     }
   },
+  mounted() {
+    this.$store.dispatch('retrieveCart')
+  },
   methods: {
+    handleOrderRes(data) {
+      /**
+       * if successful open dialog if error display error message in snackbar
+       */
+      this.orderNumber = data.id
+      this.orderRef = data.ref
+      console.log('data: ', data)
+      this.dialog = true
+    },
+    handleOrderError(e) {
+      this.orderError = e
+      this.snackbar = true
+    },
     updateCost(price) {
       this.shippingCost = price
     }
