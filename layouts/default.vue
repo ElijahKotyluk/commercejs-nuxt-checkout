@@ -18,9 +18,10 @@
           @click.stop="drawer = !drawer"
         >
           <v-icon class="mr-4">mdi-cart-outline</v-icon>
-          <p v-if="cart.line_items" class="mb-1">
-            {{ cart.line_items.length }}
+          <p v-if="cart.total_items" class="mb-1">
+            {{ cart.total_items }}
           </p>
+          <p v-else class="mb-1">0</p>
         </v-btn>
       </v-toolbar>
       <checkout v-model="drawer" :cart="cart" @update="drawer = !drawer" />

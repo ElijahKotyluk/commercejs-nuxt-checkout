@@ -65,6 +65,9 @@
         <v-card-text>
           Thank you for your order!
         </v-card-text>
+        <v-card-actions>
+          <v-btn outlined to="/">Store</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
     <v-snackbar v-model="snackbar" top vertical :timeout="timeout">

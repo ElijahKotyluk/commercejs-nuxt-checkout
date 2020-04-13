@@ -1,4 +1,4 @@
-# Adding products to a cart with Nuxt.js and Commerce.js
+# Creating a Checkout with Commerce.js SDK and Nuxt.js
 
 This guide continues from (Listing products in a catalogue with Nuxt.js and Commerce.js)[Listing Products in a Catalogue](https://github.com/ElijahKotyluk/commercejs-nuxt-demo)
 
@@ -13,13 +13,15 @@ This guide illustrates how to create a cart and add products to a cart using Nux
 ![](https://i.imgur.com/57LyKP3.png)
 
 ## Overview
-If you followed the previous guide you created a Nuxt application using `create-nuxt-app`, where you also created a Nuxt plugin for the Commerce.js SDK, and used that plugin to get your products and render them server-side by using the `nuxtServerInit` action. This guide is going to build off of the previous one and demonstrate how to use the following cart methods; `cart.add()`, `cart.retrieve()`, `cart.remove()`, and `cart.empty()`. To do this you will be expanding on your Vuex store and utilizing Vuetify to build out a simple UI that visually demonstrates these methods.
+If you followed the previous guides you first created a simple Nuxt application with `create-nuxt-app` that listed the products from your [Chec dashboard](https://authorize.chec.io/login), and then followed up with creating a cart, as well as adding, removing, and clearing a cart. This guide will walk you through creating a page dedicated to submitting an order, generating a checkout token([generateTokenFrom()](https://commercejs.com/docs/api/#generate-token)), and using that token to capture the order([capture()](https://commercejs.com/docs/api/#capture-order)).
 
 ## This guide will cover
 
-1. (Optional) Creating variants of a product in your Chec Dashboard
-2. Adding / Removing products from a cart
-3. Listing cart items and clearing a cart
+1. (Optional) Creating shipping zones and adding available zones to products
+2. Create Checkout page
+3. Create a form for customer information
+4. Form validation with Vuetify
+5. Submit an order and display the order confirmation number
 
 ## Requirements
 
@@ -38,9 +40,7 @@ Basic knowldge of Nuxt.js and JavaScript are required for this guide, and some f
 - Vuetify.js v2.2.15
 - Vue.js
 
-## Getting started
-
-### (Optional) Product Variants
+## Shipping Zones
 
 This step is optional but can be useful if you haven't gotten a chance to dive deeply into your dashboard yet. A variant in this context, would be a product that you offer that may have multiple options for purchase. For example; If you were selling a shirt, and the shirt came in various sizes or colors, you'd have more than one variant of that shirt that you may want to make available for purchase. Your Chec dashboard makes that easily available for you to add and customize.
 
