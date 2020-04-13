@@ -127,7 +127,7 @@
           v-model="cvc"
           label="cvc"
           outlined
-          :rules="[rules.required, rules.cvc]"
+          :rules="[rules.required]"
         ></v-text-field>
       </v-col>
       <v-col class="py-0">
@@ -135,7 +135,7 @@
           v-model="cardZip"
           label="Zip"
           outlined
-          :rules="[rules.required, rules.zip]"
+          :rules="[rules.required]"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -175,28 +175,7 @@ export default {
         const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         return pattern.test(v) || 'Invalid e-mail.'
       },
-      required: (v) => !!v || 'Required.',
-      zip: (v) => {
-        let pattern
-        switch (this.country.code) {
-          case 'US':
-            pattern = /^([0-9]{5})(?:[-\s]*([0-9]{4}))?$/
-            break
-          case 'CA':
-            pattern = /^[abceghjklmnprstvxy][0-9][abceghjklmnprstvwxyz]\s?[0-9][abceghjklmnprstvwxyz][0-9]$/i
-            break
-          case 'MX':
-            pattern = /^\\d{5}$/
-            break
-        }
-        return (
-          pattern.test(v) ||
-          `Invalid Zip Code for Country: ${this.country.code}`
-        )
-      },
-      cvc: (v) => {
-        return v.length === 3 || 'Invalid CVC code.'
-      }
+      required: (v) => !!v || 'Required.'
     }
   }),
   computed: {
@@ -261,8 +240,28 @@ export default {
         .capture(this.token.id, data)
         .then((r) => {
           console.log('r: ', r)
+          this.$emit('orderComplete', { id: r.id, ref: r.customer_reference })
         })
-        .catch((e) => {})
+        .catch((e) => {
+          this.$emit('orderError', e)
+        })
+    },
+    zip: (v) => {
+      let pattern
+      switch (this.country.code) {
+        case 'US':
+          pattern = /^([0-9]{5})(?:[-\s]*([0-9]{4}))?$/
+          break
+        case 'CA':
+          pattern = /^[abceghjklmnprstvxy][0-9][abceghjklmnprstvwxyz]\s?[0-9][abceghjklmnprstvwxyz][0-9]$/i
+          break
+        case 'MX':
+          pattern = /^\\d{5}$/
+          break
+      }
+      return (
+        pattern.test(v) || `Invalid Zip Code for Country: ${this.country.code}`
+      )
     }
   }
 }
