@@ -1,12 +1,5 @@
 <template>
-  <v-navigation-drawer
-    :value="value"
-    fixed
-    right
-    stateless
-    temporary
-    width="500"
-  >
+  <v-navigation-drawer absolute :value="value" right temporary width="500">
     <v-row class="d-flex my-8">
       <v-icon class="ml-10 mr-2" color="#6C7C8F" dense>mdi-cart-outline</v-icon>
       <span class="nav-text title">Cart</span>
@@ -105,7 +98,7 @@ export default {
     cart: {
       handler(val) {
         console.log('val: ', val)
-        if (val.line_items.length >= 1) {
+        if (val.line_items && val.line_items.length >= 1) {
           this.disabled = false
         } else {
           this.disabled = true
