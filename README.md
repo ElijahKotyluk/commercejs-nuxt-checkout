@@ -194,9 +194,21 @@ Your users will need some sort of form or inputs to be able to enter the necessa
 
 ```
 
+To break down this data a bit for you: 
+  * `line_items` : Your products items, within this object should be the `quantity` of the item and the possible `variant ID`(if applicable) and the `option ID` of the variant option; You can simply grab this from your cart object.
+  * `discount_code` : A discount code to provide customers with a price discount.
+  * `extrafields` : Collected extra field data
+  * `customer` : The customers `firstname`, `lastname`, and `email`.
+  * `shipping` : Customers shipping information; `name`, `street`, `town_city`, `county_state`, `postal_zip_code`, and `country`
+  * `fulfillment` : The `shipping_method` chosen by the customer.
+  * `billing` : The customers billing information: `name`, `street`, `town_city`, `county_state`, `postal_zip_code`, and `country`.
+  * `payment` : The `[gateway](https://dashboard.chec.io/setup/payment)` type and credit card information of the customer: `number`, `expires`, `cvc`, `postal_zip_code`.
+  * `pay_what_you_want` : In the case you offer products in your store that give customers the option to pay what they want.
+
+
 ## 2. BillingDetails.vue
 
-Create a new Vue file named: `BillingDetails.vue` and put it in the `/components` directory. For this component you will use Vuetify's [VForm](https://vuetifyjs.com/en/components/forms/) compoonent that will contain a few [VTextField](https://vuetifyjs.com/en/components/text-fields/)'s, a couple [VSelect](https://vuetifyjs.com/en/components/selects/)'s and a VBtn component at the end to submit the order and capture the checkout.  
+Create a new Vue file named: `BillingDetails.vue` and put it in the `/components` directory. For this component you will use Vuetify's [VForm](https://vuetifyjs.com/en/components/forms/) component that will contain a few [VTextField](https://vuetifyjs.com/en/components/text-fields/)'s, a couple [VSelect](https://vuetifyjs.com/en/components/selects/)'s and a [VBtn](https://vuetifyjs.com/en/components/buttons/) component at the end to submit the order and capture the checkout.  
 
 ``` js
 // BillingDetails.vue
@@ -348,7 +360,7 @@ Create a new Vue file named: `BillingDetails.vue` and put it in the `/components
 
 ### Input rules
 
-A prop that Vuetify's inputs have in common is the `rules` prop, which takes an array of functions that take an input value as an argument, returning either true/false or an error string. These are especially useful when you are expecting a certain result or format from the input. For this example only one rule(`required`) is declared to demonstrate how to use the rules. In your components `data` object you will see a `rules` object that contains 2 functions, `email()` and `required()`. `rules.email()` will check if the value is a valid email by testing it against the regex pattern and returning `true` or a string `"Invalid e-mail."`. `rules.required()` will just simply check that a value is present in the input field or returns the string `Required.`.
+A prop that Vuetify's inputs have in common is the `rules` prop, which takes an array of functions. Each function takes the input's value as an argument, returning either true/false or an error string. These are especially useful when you are expecting a certain result or format from the input. For this example only one rule(`required`) is declared to demonstrate how to use the rules. In your components `data` object you will see a `rules` object that contains 2 functions, `email()` and `required()`. `rules.email()` will check if the value is a valid email by testing it against the regex pattern and returning `true` or a string `"Invalid e-mail."`. `rules.required()` will just simply check that a value is present in the input field or returns the string `Required.`.
 
 ## 2. BillingDetails.vue cont.
 
