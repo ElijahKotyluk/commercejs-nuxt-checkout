@@ -50,13 +50,12 @@ Shipping zones are important because they allow you to determine where you will 
 ### Adding a shipping zone:
 To add a shipping zone for your store you should first login to your [Chec dashboard](https://authorize.chec.io/login) and locate the [Shipping](https://dashboard.chec.io/setup/shipping#) tab located in your dashboards setup. Click on the **"+ Add Zone"** button, a modal that contains a form will pop up and ask for some pieces of information; A Zone Name, the name of the zone or region. Countries & Regions, the countries and/or regions you will ship your store's products to. Base Rates, the base rate for shipping to the new shipping zone. 
 
-![Add Zone form](https://i.imgur.com/zmLiuJx.png)
+<img src="https://i.imgur.com/zmLiuJx.png" height="350" width="425" />
 
 ### Adding a shipping zone to your products:
 
 You have just set up a shipping zone, now it's time to go to your products, select a product and scroll down to **Delivery Options** and enable the newly created zone. 
 
-<img src="https://i.imgur.com/0TRrqni.png" style="height: 300px; width: 425px" />
 ![Add zone to product ](https://i.imgur.com/0TRrqni.png)
 
 The first thing you'll want to do is revisit your Vuex store located at `store/index.js` and create an empty object in `state` named `cart` which is where all your data related to your cart will be. Next, to retrieve the cart you will go ahead and create an async action, `retrieveCart()`. This action will call `cart.retrieve()` and to retrieve your cart, or intialize a new one. Keep in mind that it is important that these actions are asynchronous and return promises or `nuxtServerInit()` will not work properly. Once those are done, you will want to build out three more actions; [addProductToCart](https://commercejs.com/docs/api/#add-item-to-cart): Adds a product to your cart, [removeProductFromCart](https://commercejs.com/docs/api/#remove-item-from-cart): Removes a product from the cart, (emptyCart)[https://commercejs.com/docs/api/#empty-cart]: Empties the cart. After your actions are complete, you will want to update the `nuxtServerInit()` action to dispatch both `getProducts` and `retrieveCart` and commit mutations to update the state with the returned data([cart.retrieve()](https://commercejs.com/docs/api/#retrieve-a-cart), [products.list()](https://commercejs.com/docs/api/#list-all-products)). After you finish that up, create your mutations which will be, `setProducts`: Sets your products in state, `setCart`: Called by multiple actions to set the `cart` object in state, and then `clearCart`: which will clear your cart object and set it back to it's default value(`{}`). And lastly, you'll want to create the following `getters` to easily retrieve your state from any component. A `cart` getter to retrieve your cart data, and one final getter for the `subtotal` property from the `cart` object called `cartSubtotal`.
