@@ -35,7 +35,6 @@ export const actions = {
     })
 
     if (token) {
-      console.log('token, ', token)
       commit('setToken', token)
     }
   },

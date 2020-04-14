@@ -246,9 +246,9 @@ export default {
           this.$emit('orderError', e)
         })
     },
-    zip: (v) => {
+    zip: (v, code) => {
       let pattern
-      switch (this.country.code) {
+      switch (code) {
         case 'US':
           pattern = /^([0-9]{5})(?:[-\s]*([0-9]{4}))?$/
           break
@@ -260,7 +260,7 @@ export default {
           break
       }
       return (
-        pattern.test(v) || `Invalid Zip Code for Country: ${this.country.code}`
+        pattern.test(v) || `Invalid Zip Code for Country: ${code}`
       )
     }
   }
