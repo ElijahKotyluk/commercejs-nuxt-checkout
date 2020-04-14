@@ -58,9 +58,82 @@ You have just set up a shipping zone, now to add the zone to your products. Go t
 
 ![Add zone to product ](https://i.imgur.com/0TRrqni.png)
 
-## 1. Creating a component to handle billing details:
+## 1. Generating a checkout token:
 
-Your users will need some sort of form or inputs to be able to enter the necessary information in order to submit and complete a checkout order. So first we will go over the expected data that will be necessary in building out this form component. The method used to checkout an order is the [capture()](https://commercejs.com/docs/api/#capture-order) method on the `checkout` class. The `capture` method expects **2** parameters, a `checkout_token_id: string` and an object that contains data from the user and from their cart.
+One of the key parts to capturing a checkout is generating a checkout token using the following method: [generateToken()](https://commercejs.com/docs/api/#generate-token). For this, you will go back into your `store/index.js` file add a new propert on the state object called: `token` which will equal an empty object and add a new action: `genCheckoutToken()`. This action will do as the name says and create a token to be used to capture a checkout order. `generateToken()` expects one parameter, which could be a cart's id, a product's id, or a permalink. The second parameter shouldd be an object that states the type of id you are passing as the first parameter, in this scenario you will be using your cart's id. If all checks out and the reqest is successful; simply commit the token to a `setToken` mutation, which will just set the state's token object to the response of `generateToken()`.
+
+``` js
+
+  // State
+export const state = {
+  ...
+  token: {},
+  ...
+}
+  // Actions
+export const actions = {
+  ...
+    async genCheckoutToken({ commit }, payload) {
+    const token = await v.$commerce.checkout.generateToken(payload, {
+      type: 'cart'
+    })
+
+    if (token) {
+      commit('setToken', token)
+    }
+  },
+  ...
+}
+
+// Mutations
+export const mutations = {
+...
+  setToken(state, payload) {
+    state.token = payload
+  },
+...
+}
+
+```
+
+After your store has been updated go to your components directory and open up `components/Checkout.vue` in your editor and add your new action to `mapActions` and update the checkout button to call `genToken(cart.id)` when a click event is triggered. Also add the `to="/checkout"` prop and set it to the new checkout route that you will be creating, which can be read about in [Vuetify's VBtn docs](https://vuetifyjs.com/en/components/buttons/)
+
+``` js
+// components/Checkout.vue
+<template>
+...
+  <v-btn
+    color="green"
+    class="white--text mt-10"
+    :disabled="disabled"
+    to="/checkout" // Nuxt will create the route when the component is created
+    x-large
+    @click="genToken(cart.id)" // Pass the current cart's id
+  >
+    <v-icon small>mdi-lock</v-icon>
+    <span>Secure Checkout</span>
+  </v-btn>
+...
+<template>
+
+<script>
+...
+  methods: {
+    ...mapActions({
+      removeProduct: 'removeProductFromCart',
+      clearCart: 'clearCart',
+      genToken: 'genCheckoutToken' // Used in VBtn to call the genCheckoutToken action
+    })
+  },
+...
+<script>
+
+```
+
+
+## 3. Generating a checkout token
+
+Your users will need some sort of form or inputs to be able to enter the necessary information in order to submit and complete a checkout order. So first we will go over the expected data that will be necessary in building out this form component. The method used to checkout an order is the [capture(checkout_token_id, data)](https://commercejs.com/docs/api/#capture-order) method on the `checkout` class. The `capture` method expects **2** parameters, a `checkout_token_id: string` and an object that contains data from the user and from their cart.
 
 ``` js
 // sample capture() method object parameter.
@@ -120,6 +193,305 @@ Your users will need some sort of form or inputs to be able to enter the necessa
 }
 
 ```
+
+## BillingDetails.vue
+
+Create a new Vue file named: `BillingDetails.vue` and put it in the `/components` directory. For this component you will use Vuetify's [VForm components](https://vuetifyjs.com/en/components/forms/) that will contain a few [VTextField](https://vuetifyjs.com/en/components/text-fields/)'s, a couple [VSelect](https://vuetifyjs.com/en/components/selects/)'s and a VBtn component at the end to submit the order.  
+
+``` js
+// BillingDetails.vue
+<template>
+  <v-form ref="billing" class="px-1">
+    <v-row>
+      <v-col class="py-0">
+        <v-text-field
+          v-model="firstName"
+          dense
+          name="firstName"
+          label="First Name"
+          outlined
+          :rules="[rules.required]"
+        ></v-text-field>
+      </v-col>
+      <v-col class="py-0">
+        <v-text-field
+          v-model="lastName"
+          dense
+          name="lastName"
+          label="Last Name"
+          outlined
+          :rules="[rules.required]"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="py-0">
+        <v-text-field
+          v-model="phone"
+          dense
+          name="phone"
+          label="Phone #"
+          outlined
+          :rules="[rules.required]"
+        ></v-text-field>
+      </v-col>
+      <v-col class="py-0">
+        <v-text-field
+          v-model="email"
+          dense
+          label="Email"
+          name="email"
+          outlined
+          :rules="[rules.required, rules.email]"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="py-0">
+        <v-text-field
+          v-model="address"
+          dense
+          label="Street Address"
+          name="address"
+          outlined
+          :rules="[rules.required]"
+        ></v-text-field>
+      </v-col>
+      <v-col class="py-0">
+        <v-text-field
+          v-model="city"
+          dense
+          label="City"
+          name="city"
+          outlined
+          :rules="[rules.required]"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="py-0">
+        <v-select
+          v-model="country"
+          dense
+          item-text="name"
+          item-value="code"
+          label="Country"
+          name="country"
+          outlined
+          return-object
+          :items="countries"
+          :rules="[rules.required]"
+          @change="shippingOpts(token.id)"
+        ></v-select>
+      </v-col>
+      <v-col class="py-0">
+        <v-select
+          v-model="region"
+          dense
+          item-text="name"
+          item-value="code"
+          label="Region"
+          name="region"
+          outlined
+          :items="country.states"
+          :rules="[rules.required]"
+        ></v-select>
+      </v-col>
+      <v-col class="py-0">
+        <v-text-field
+          v-model="postalCode"
+          dense
+          label="Postal Code"
+          name="postalCode"
+          outlined
+          :rules="[rules.required]"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <p class="title ml-3 mb-4">Payment Details</p>
+    <v-text-field
+      v-model="cardNumber"
+      label="Card #"
+      outlined
+      :rules="[rules.required]"
+    ></v-text-field>
+    <v-row>
+      <v-col class="py-0">
+        <v-text-field
+          v-model="expiryDate"
+          label="Date"
+          outlined
+          :rules="[rules.required]"
+        ></v-text-field>
+      </v-col>
+      <v-col class="py-0">
+        <v-text-field
+          v-model="cvc"
+          label="cvc"
+          outlined
+          :rules="[rules.required]"
+        ></v-text-field>
+      </v-col>
+      <v-col class="py-0">
+        <v-text-field
+          v-model="cardZip"
+          label="Zip"
+          outlined
+          :rules="[rules.required]"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-btn @click.native="submitOrder">Submit</v-btn>
+  </v-form>
+</template>
+```
+
+### Input rules
+
+A prop that Vuetify's inputs have in common is the `rules` prop, which takes an array of functions that take an input value as an argument, returning either true/false or an error string. These are especially useful when you are expecting a certain result or format from the input. For this example only one rule(`required`) is declared to demonstrate how to use the rules. In your components `data` object you will see a `rules` object that contains 2 functions, `email()` and `required()`. `rules.email()` will check if the value is a valid email by testing it against the regex pattern and returning `true` or a string `"Invalid e-mail."`. `rules.required()` will just simply check that a value is present in the input field or returns the string `Required.`.
+
+## BillingDetails.vue cont.
+
+For the script portion of this component, you will first import mapGetters and [locale](https://github.com/ElijahKotyluk/commercejs-nuxt-checkout/blob/master/static/locale/index.js)(A static file containing country and region data specific to this demo). This component will also be passed the `cart` prop from the parent, which is just the cart stored in your state that will be inhereted from the `pages/checkout.vue` component. Inside the components `data` function will live all the input models for the form inputs as seen above, as well as the rules object. The computed property utilizes mapGetters to return the token that is stored in your app's vuex state.
+
+``` js
+// components/BillingDetails.vue
+<script>
+import { mapGetters } from 'vuex'
+import locale from '~/static/locale'
+
+export default {
+  name: 'BillingDetails',
+  props: {
+    cart: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  data: () => ({
+    countries: locale,
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    address: '',
+    country: {},
+    city: '',
+    region: '',
+    postalCode: '',
+    cardNumber: '4242 4242 4242 4242',
+    expiryDate: '01/2023',
+    cvc: '123',
+    cardZip: '94103',
+    rules: {
+      email: (v) => {
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        return pattern.test(v) || 'Invalid e-mail.'
+      },
+      required: (v) => !!v || 'Required.'
+    }
+  }),
+  computed: {
+    ...mapGetters({
+      token: 'token'
+    })
+  },
+  methods: {
+    shippingOpts(tokenID) {
+      this.$commerce.checkout
+        .getShippingOptions(tokenID, {
+          country: this.country.code
+        })
+        .then((r) => {
+          this.$emit('shippingCost', r[0].price.formatted)
+          this.shipMethod = r[0].id
+        })
+    },
+  }
+}
+</script>
+
+```
+
+The `shippingOptions()` method takes the token's id as the parameter and calls Commerce.js's [getShippingOptions](https://commercejs.com/docs/api/#get-available-shipping-methods) method. `getShippingOptions()` takes the token id as the first paremeter and an object containing a country and an optional region, returning an array of shipping methods associated with the country and region. Once the request has completed, you will emit a `'shippingCost'` with the formatted price and set the shipMethod to the first id in the results array.
+
+
+## Submit and capture a checkout
+
+This is the last part to the `BillingDetails.vue` component, the `submitOrder()` method. This method first validates the form, if it does not pass validation then return and stop execution of the method's code. If the form and the inputs pass validation, then begin building the `data` object which will be passed to the [checkout.capture()](https://commercejs.com/docs/api/#capture-order) method. The `capture()` method is passed a `checkout_token_id` and the `data` object which will contain all the data billing details provided by the user, the cart's line items, the shipping methods associated with the shipping region, and finally credit card information. Once this object is built you will call the `capture()` method by passing the checkout token id and `data` object, and whether the response is a result or an error you will emit a different event. In the case of a successful result: `'orderComplete'` passing an object containing the order id and customer's reference. In the case of an error: `'orderError'` passing the caught error. 
+
+``` js
+// BillingDetails.vue
+  methods: {
+    ...
+    submitOrder() {
+      if (!this.$refs.billing.validate()) return // eslint-disable-line no-useless-return
+      const date = this.expiryDate.split('/')
+      const lineItems = {}
+
+      for (const i of this.cart.line_items) {
+        lineItems[i.id] = {
+          quantity: i.quantity
+        }
+      }
+      // Capture checkout data
+      const data = {
+        line_items: lineItems,
+        customer: {
+          firstname: this.firstName,
+          lastname: this.lastName,
+          email: this.email
+        },
+        shipping: {
+          name: `${this.firstName} ${this.lastName}`,
+          street: this.address,
+          town_city: this.city,
+          county_state: this.region,
+          postal_zip_code: this.postalCode,
+          country: this.country.code
+        },
+        fulfillment: {
+          shipping_method: this.shipMethod
+        },
+        payment: {
+          gateway: 'test_gateway',
+          card: {
+            number: this.cardNumber,
+            expiry_month: date[0],
+            expiry_year: date[1],
+            cvc: this.cvc,
+            postal_zip_code: this.cardZip
+          }
+        }
+      }
+
+      // make request
+      this.$commerce.checkout
+        .capture(this.token.id, data)
+        .then((r) => {
+          this.$emit('orderComplete', { id: r.id, ref: r.customer_reference })
+        })
+        .catch((e) => {
+          this.$emit('orderError', e)
+        })
+    },
+  ...
+  }
+
+```
+
+
+
+## Checkout page component
+
+This next step you will be creating a new Vue component in the pages directory; `pages/checkout.vue`, this component will be the `/checkout` route as Nuxt will create that route by just adding the `checkout.vue` component file inside of your [Nuxt Pages](https://nuxtjs.org/guide/views#pages) directory.
+
+``` js
+// pages/checkout.vue
+```
+
+
+
 
 The first thing you'll want to do is revisit your Vuex store located at `store/index.js` and create an empty object in `state` named `cart` which is where all your data related to your cart will be. Next, to retrieve the cart you will go ahead and create an async action, `retrieveCart()`. This action will call `cart.retrieve()` and to retrieve your cart, or intialize a new one. Keep in mind that it is important that these actions are asynchronous and return promises or `nuxtServerInit()` will not work properly. Once those are done, you will want to build out three more actions; [addProductToCart](https://commercejs.com/docs/api/#add-item-to-cart): Adds a product to your cart, [removeProductFromCart](https://commercejs.com/docs/api/#remove-item-from-cart): Removes a product from the cart, (emptyCart)[https://commercejs.com/docs/api/#empty-cart]: Empties the cart. After your actions are complete, you will want to update the `nuxtServerInit()` action to dispatch both `getProducts` and `retrieveCart` and commit mutations to update the state with the returned data([cart.retrieve()](https://commercejs.com/docs/api/#retrieve-a-cart), [products.list()](https://commercejs.com/docs/api/#list-all-products)). After you finish that up, create your mutations which will be, `setProducts`: Sets your products in state, `setCart`: Called by multiple actions to set the `cart` object in state, and then `clearCart`: which will clear your cart object and set it back to it's default value(`{}`). And lastly, you'll want to create the following `getters` to easily retrieve your state from any component. A `cart` getter to retrieve your cart data, and one final getter for the `subtotal` property from the `cart` object called `cartSubtotal`.
 
