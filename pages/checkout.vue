@@ -116,7 +116,6 @@ export default {
        */
       this.orderNumber = data.id
       this.orderRef = data.ref
-      console.log('data: ', data)
       this.dialog = true
     },
     handleOrderError(e) {

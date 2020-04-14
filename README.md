@@ -54,9 +54,72 @@ To add a shipping zone for your store you should first login to your [Chec dashb
 
 ### Adding a shipping zone to your products:
 
-You have just set up a shipping zone, now it's time to go to your products, select a product and scroll down to **Delivery Options** and enable the newly created zone. 
+You have just set up a shipping zone, now to add the zone to your products. Go to your products in your dashboard and elect a product and scroll down to **Delivery Options**. Enable the newly created zone that appears underneath the default. This will allow you to notify the users of price changes based on the user's selected shipping arrangements, as well as supply the [capture](https://commercejs.com/docs/api/#capture-order) method with the necessary shipping option id to submit the transaction. 
 
 ![Add zone to product ](https://i.imgur.com/0TRrqni.png)
+
+## 1. Creating a component to handle billing details:
+
+Your users will need some sort of form or inputs to be able to enter the necessary information in order to submit and complete a checkout order. So first we will go over the expected data that will be necessary in building out this form component. The method used to checkout an order is the [capture()](https://commercejs.com/docs/api/#capture-order) method on the `checkout` class. The `capture` method expects **2** parameters, a `checkout_token_id: string` and an object that contains data from the user and from their cart.
+
+``` js
+// sample capture() method object parameter.
+{
+  "line_items": {
+      "item_7RyWOwmK5nEa2V": {
+          "quantity": 1,
+          "variants": {
+              "vrnt_p6dP5g0M4ln7kA": "optn_DeN1ql93doz3ym"
+          }
+      }
+  },
+  "discount_code": "20off",
+  "extrafields": {
+      "extr_Kvg9l6zvnl1bB7": "415-111-2222",
+      "extr_bWZ3l8zLNokpEQ": "google.com"
+  },
+  "customer": {
+      "firstname": "John",
+      "lastname": "Doe",
+      "email": "john.doe@example.com"
+  },
+  "shipping": {
+      "name": "John Doe",
+      "street": "123 Fake St",
+      "town_city": "San Francisco",
+      "county_state": "California",
+      "postal_zip_code": "94103",
+      "country": "US"
+  },
+  "fulfillment": {
+      "shipping_method": "ship_7RyWOwmK5nEa2V"
+  },
+  "billing": {
+      "name": "John Doe",
+      "street": "234 Fake St",
+      "town_city": "San Francisco",
+      "county_state": "California",
+      "postal_zip_code": "94103",
+      "country": "US"
+  },
+  "payment": {
+      "gateway": "stripe",
+      "card": {
+          "number": "4242 4242 4242 4242",
+          "expires": "11\/19",
+          "cvc": 123,
+          "postal_zip_code": "94107",
+          "token": "irh98298g49",
+          "nonce": 293074902374234
+      },
+      "razorpay": {
+          "payment_id": "839h8d89wg87r3cz3trbis8"
+      }
+  },
+  "pay_what_you_want": "149.99"
+}
+
+```
 
 The first thing you'll want to do is revisit your Vuex store located at `store/index.js` and create an empty object in `state` named `cart` which is where all your data related to your cart will be. Next, to retrieve the cart you will go ahead and create an async action, `retrieveCart()`. This action will call `cart.retrieve()` and to retrieve your cart, or intialize a new one. Keep in mind that it is important that these actions are asynchronous and return promises or `nuxtServerInit()` will not work properly. Once those are done, you will want to build out three more actions; [addProductToCart](https://commercejs.com/docs/api/#add-item-to-cart): Adds a product to your cart, [removeProductFromCart](https://commercejs.com/docs/api/#remove-item-from-cart): Removes a product from the cart, (emptyCart)[https://commercejs.com/docs/api/#empty-cart]: Empties the cart. After your actions are complete, you will want to update the `nuxtServerInit()` action to dispatch both `getProducts` and `retrieveCart` and commit mutations to update the state with the returned data([cart.retrieve()](https://commercejs.com/docs/api/#retrieve-a-cart), [products.list()](https://commercejs.com/docs/api/#list-all-products)). After you finish that up, create your mutations which will be, `setProducts`: Sets your products in state, `setCart`: Called by multiple actions to set the `cart` object in state, and then `clearCart`: which will clear your cart object and set it back to it's default value(`{}`). And lastly, you'll want to create the following `getters` to easily retrieve your state from any component. A `cart` getter to retrieve your cart data, and one final getter for the `subtotal` property from the `cart` object called `cartSubtotal`.
 
