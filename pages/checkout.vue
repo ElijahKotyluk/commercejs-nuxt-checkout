@@ -1,10 +1,7 @@
 <template>
-  <v-card elevation="0">
+  <v-card color="rgba(0, 0, 0, 0)" elevation="0">
     <v-row align="center" justify="space-around">
       <v-col cols="12" sm="7" lg="5">
-        <v-card-title primary-title>
-          Billing Details
-        </v-card-title>
         <billing-details
           :cart="cart"
           @shippingCost="updateCost"
@@ -13,7 +10,7 @@
         />
       </v-col>
       <v-col cols="12" sm="5">
-        <v-card max-width="400">
+        <v-card elevation="20" max-width="400">
           <v-card-title class="pb-0">Order Summary</v-card-title>
           <v-container>
             <v-row justify="space-between">
@@ -52,7 +49,7 @@
               <v-card-subtitle>{{ total }}</v-card-subtitle>
             </v-row>
             <v-row justify="center">
-              <v-btn class="my-2" to="/">Edit Cart</v-btn>
+              <v-btn class="my-2" color="green" to="/">Edit Cart</v-btn>
             </v-row>
           </v-container>
         </v-card>
@@ -66,7 +63,7 @@
           Thank you for your order!
         </v-card-text>
         <v-card-actions>
-          <v-btn outlined to="/">Store</v-btn>
+          <v-btn color="green" outlined to="/">Store</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

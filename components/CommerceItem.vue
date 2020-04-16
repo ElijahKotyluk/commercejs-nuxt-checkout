@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mb-5" elevation="0" height="375" width="350">
+  <v-card class="mb-5 pt-3" elevation="20" height="400" width="350">
     <v-hover v-slot:default="{ hover }">
       <v-img :src="product.media.source" aspect-ratio="1" contain>
         <v-overlay
@@ -43,8 +43,8 @@
         </v-overlay>
       </v-img>
     </v-hover>
-    <v-card-actions>
-      {{ product.name }}
+    <v-card-actions class="font-weight-medium">
+      <span>{{ product.name }}</span>
       <span
         v-if="product.quantity <= 0"
         class="caption font-italic font-weight-medium red--text accent-1"

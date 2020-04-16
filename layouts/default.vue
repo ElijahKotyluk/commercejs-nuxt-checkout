@@ -1,34 +1,36 @@
 <template>
   <v-app light>
-    <v-content>
-      <v-toolbar>
-        <v-toolbar-title>
-          <a class="title toolbar-title" href="/">
-            Demo Merchant
-          </a>
-        </v-toolbar-title>
-        <v-spacer></v-spacer>
+    <div :style="{ backgroundImage: `url(${backgroundUrl})`, height: '100%' }">
+      <v-content>
+        <v-toolbar>
+          <v-toolbar-title>
+            <a class="title toolbar-title" href="/">
+              Demo Merchant
+            </a>
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
 
-        <v-btn
-          class="drawer-btn"
-          color="black"
-          elevation="0"
-          outlined
-          right
-          @click.stop="drawer = !drawer"
-        >
-          <v-icon class="mr-4">mdi-cart-outline</v-icon>
-          <p v-if="cart.total_items" class="mb-1">
-            {{ cart.total_items }}
-          </p>
-          <p v-else class="mb-1">0</p>
-        </v-btn>
-      </v-toolbar>
-      <checkout v-model="drawer" :cart="cart" @update="drawer = !drawer" />
-      <v-container>
-        <nuxt />
-      </v-container>
-    </v-content>
+          <v-btn
+            class="drawer-btn"
+            color="green"
+            elevation="0"
+            outlined
+            right
+            @click.stop="drawer = !drawer"
+          >
+            <v-icon class="mr-4">mdi-cart-outline</v-icon>
+            <p v-if="cart.total_items" class="mb-1">
+              {{ cart.total_items }}
+            </p>
+            <p v-else class="mb-1">0</p>
+          </v-btn>
+        </v-toolbar>
+        <checkout v-model="drawer" :cart="cart" @update="drawer = !drawer" />
+        <v-container>
+          <nuxt />
+        </v-container>
+      </v-content>
+    </div>
   </v-app>
 </template>
 
@@ -41,6 +43,7 @@ export default {
     Checkout
   },
   data: () => ({
+    backgroundUrl: '/guitar-1940733_1920.jpg',
     drawer: false
   }),
   computed: {
