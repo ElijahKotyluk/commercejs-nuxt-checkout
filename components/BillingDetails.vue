@@ -34,7 +34,6 @@
             name="phone"
             label="Phone #"
             outlined
-            :rules="[rules.required]"
           ></v-text-field>
         </v-col>
         <v-col class="py-0">
