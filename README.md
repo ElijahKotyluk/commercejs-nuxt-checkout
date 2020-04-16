@@ -2,7 +2,7 @@
 
 This guide continues from (Adding products to a cart with Nuxt.js and Commerce.js)[Adding Products To A Cart](https://github.com/ElijahKotyluk/nuxt-cjs-adding-products)
 
-This guide illustrates how to create a cart and add products to a cart using Nuxt.
+This guide illustrates how to create a checkout form and capture an order.
 
 [Live Demo](https://commercejs-sdk-nuxt-checkout.herokuapp.com/)
 
@@ -34,7 +34,7 @@ If you followed the previous guides you first created a simple Nuxt application 
 - [Vuex](https://nuxtjs.org/guide/vuex-store/)
 
 ## Prerequisites
-Basic knowldge of Nuxt.js and JavaScript are required for this guide, and some familiarity with Vuetify would help.
+Basic knowldge of Nuxt.js and JavaScript are required for this guide, and some familiarity with Vuetify will help.
 
 - Nuxt.js v2
 - JavaScript(ES7)
@@ -43,7 +43,7 @@ Basic knowldge of Nuxt.js and JavaScript are required for this guide, and some f
 
 ## Shipping Zones
 
-Shipping zones are important because they allow you to determine where you will ship to, as well as the different costs for shipping to those different countries, states, or regions. 
+Shipping zones are important because they allow you to determine where you will ship to, as well as calculating costs for shipping to those different countries, states, or regions. 
 
 ![Adding a Zone](https://i.imgur.com/SbxB7oP.png)
 
@@ -96,7 +96,7 @@ export const mutations = {
 
 ```
 
-After your store has been updated go to your components directory and open up `components/Checkout.vue` in your editor and add your new action to `mapActions` and update the checkout button to call `genToken(cart.id)` when a click event is triggered. Also add the `to="/checkout"` prop and set it to the new checkout route that you will be creating, which can be read about in [Vuetify's VBtn docs](https://vuetifyjs.com/en/components/buttons/)
+After your store has been updated, go to your components directory and open up `components/Checkout.vue` in your editor and add your new action to `mapActions` and update the checkout button to call `genToken(cart.id)` when a click event is triggered. Also add the `to="/checkout"` prop and set it to the new checkout route that you will be creating, which can be read about in [Vuetify's VBtn docs](https://vuetifyjs.com/en/components/buttons/)
 
 ``` js
 // components/Checkout.vue
@@ -194,21 +194,9 @@ Your users will need some sort of form or inputs to be able to enter the necessa
 
 ```
 
-To break down this data a bit for you: 
-  * `line_items` : Your products items, within this object should be the `quantity` of the item and the possible `variant ID`(if applicable) and the `option ID` of the variant option; You can simply grab this from your cart object.
-  * `discount_code` : A discount code to provide customers with a price discount.
-  * `extrafields` : Collected extra field data
-  * `customer` : The customers `firstname`, `lastname`, and `email`.
-  * `shipping` : Customers shipping information; `name`, `street`, `town_city`, `county_state`, `postal_zip_code`, and `country`
-  * `fulfillment` : The `shipping_method` chosen by the customer.
-  * `billing` : The customers billing information: `name`, `street`, `town_city`, `county_state`, `postal_zip_code`, and `country`.
-  * `payment` : The `[gateway](https://dashboard.chec.io/setup/payment)` type and credit card information of the customer: `number`, `expires`, `cvc`, `postal_zip_code`.
-  * `pay_what_you_want` : In the case you offer products in your store that give customers the option to pay what they want.
-
-
 ## 2. BillingDetails.vue
 
-Create a new Vue file named: `BillingDetails.vue` and put it in the `/components` directory. For this component you will use Vuetify's [VForm](https://vuetifyjs.com/en/components/forms/) component that will contain a few [VTextField](https://vuetifyjs.com/en/components/text-fields/)'s, a couple [VSelect](https://vuetifyjs.com/en/components/selects/)'s and a [VBtn](https://vuetifyjs.com/en/components/buttons/) component at the end to submit the order and capture the checkout.  
+Create a new Vue file named: `BillingDetails.vue` and put it in the `/components` directory. For this component you will use Vuetify's [VForm](https://vuetifyjs.com/en/components/forms/) compoonent that will contain a few [VTextField](https://vuetifyjs.com/en/components/text-fields/)'s, a couple [VSelect](https://vuetifyjs.com/en/components/selects/)'s and a VBtn component at the end to submit the order and capture the checkout.  
 
 ``` js
 // BillingDetails.vue
@@ -360,7 +348,7 @@ Create a new Vue file named: `BillingDetails.vue` and put it in the `/components
 
 ### Input rules
 
-A prop that Vuetify's inputs have in common is the `rules` prop, which takes an array of functions. Each function takes the input's value as an argument, returning either true/false or an error string. These are especially useful when you are expecting a certain result or format from the input. For this example only one rule(`required`) is declared to demonstrate how to use the rules. In your components `data` object you will see a `rules` object that contains 2 functions, `email()` and `required()`. `rules.email()` will check if the value is a valid email by testing it against the regex pattern and returning `true` or a string `"Invalid e-mail."`. `rules.required()` will just simply check that a value is present in the input field or returns the string `Required.`.
+A prop that Vuetify's inputs have in common is the `rules` prop, which takes an array of functions that take an input value as an argument, returning either true/false or an error string. These are especially useful when you are expecting a certain result or format from the input. For this example only one rule(`required`) is declared to demonstrate how to use the rules. In your components `data` object you will see a `rules` object that contains 2 functions, `email()` and `required()`. `rules.email()` will check if the value is a valid email by testing it against the regex pattern and returning `true` or a string `"Invalid e-mail."`. `rules.required()` will just simply check that a value is present in the input field or returns the string `Required.`.
 
 ## 2. BillingDetails.vue cont.
 
@@ -666,13 +654,13 @@ Nice work, you've successfully created a checkout page and captured an order.
 
 Let's review what we have accommplished in this guide.
 
-* Learned how to create shipping regions and apply them to products in your dashboard.
+* Learned how to create shipping regions and apply them to products in your dashboard
 * Generated a checkout token and used that token to capture an order
 * Created a component to be used as a form to gather data to submit the capture
 * Wrote rules for required inputs
 * Created a Checkout page for your customers
 
-As you can see, the Commerce.js SDK greatly simplifies the ECommerce process, the only thing left for you to do is create a theme or layout and style your app as you see fit.
+As you can see, the Commerce.js SDK greatly simplifies the eCommerce process, the only thing left for you to do is create a theme or layout and style your app as you see fit.
 
 This guide continues from (Adding products to a cart with Nuxt.js and Commerce.js)[Adding Products To A Cart](https://github.com/ElijahKotyluk/nuxt-cjs-adding-products)
 
