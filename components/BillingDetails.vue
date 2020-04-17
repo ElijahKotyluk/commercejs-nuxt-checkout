@@ -245,7 +245,6 @@ export default {
       this.$commerce.checkout
         .capture(this.token.id, data)
         .then((r) => {
-          console.log('r: ', r)
           this.$emit('orderComplete', { id: r.id, ref: r.customer_reference })
         })
         .catch((e) => {

@@ -97,7 +97,6 @@ export default {
   watch: {
     cart: {
       handler(val) {
-        console.log('val: ', val)
         if (val.line_items && val.line_items.length >= 1) {
           this.disabled = false
         } else {
