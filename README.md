@@ -13,7 +13,7 @@ This guide illustrates how to create a checkout form and capture an order.
 ![](https://imgur.com/a/o0Q6e0S)
 
 ## Overview
-If you followed the previous guides you first created a simple Nuxt application with `create-nuxt-app` that listed the products from your [Chec dashboard](https://authorize.chec.io/login), and then followed up with creating a cart, as well as adding, removing, and clearing a cart. This guide will walk you through creating a page dedicated to submitting an order, generating a checkout token([generateTokenFrom()](https://commercejs.com/docs/api/#generate-token)), and using that token to capture the order([capture()](https://commercejs.com/docs/api/#capture-order)).
+If you followed the previous guides you first created a simple Nuxt application with `create-nuxt-app`, Vuex, and Vuetify that listed the products from your [Chec dashboard](https://authorize.chec.io/login), and then followed up with creating a cart, as well as adding, removing, and clearing a cart. This guide will walk you through creating a page dedicated to submitting an order, generating a checkout token([generateTokenFrom()](https://commercejs.com/docs/api/#generate-token)), and using that token to capture the order([capture()](https://commercejs.com/docs/api/#capture-order)).
 
 ## This guide will cover
 
@@ -54,13 +54,13 @@ To add a shipping zone for your store you should first login to your [Chec dashb
 
 ### Adding a shipping zone to your products:
 
-You have just set up a shipping zone, now to add the zone to your products. Go to your products in your dashboard and elect a product and scroll down to **Delivery Options**. Enable the newly created zone that appears underneath the default. This will allow you to notify the users of price changes based on the user's selected shipping arrangements, as well as supply the [capture](https://commercejs.com/docs/api/#capture-order) method with the necessary shipping option id to submit the transaction. 
+You have just set up a shipping zone, now to add the zone to your products. Go to your products in your dashboard, select a product and scroll down to **Delivery Options**. Enable the newly created zone that appears underneath the default. This will allow you to notify the users of price changes based on the user's selected shipping arrangements, as well as supply the [capture](https://commercejs.com/docs/api/#capture-order) method with the necessary shipping option id to submit the transaction. 
 
 ![Add zone to product ](https://i.imgur.com/0TRrqni.png)
 
 ## 1. Generating a checkout token:
 
-One of the key parts to capturing a checkout is generating a checkout token using the following method: [generateToken()](https://commercejs.com/docs/api/#generate-token). For this, you will go back into your `store/index.js` file add a new property on the state object called: `token` which will equal an empty object and add a new action: `genCheckoutToken()`. This action will do as the name says and create a token to be used to capture a checkout order. `generateToken()` expects one parameter, which could be a cart's id, a product's id, or a permalink. The second parameter should be an object that states the type of id you are passing as the first parameter, in this scenario you will be using your cart's id. If all checks out and the request is successful; simply commit the token to a `setToken` mutation, which will just set the state's token object to the response of `generateToken()`.
+One of the key parts to capturing a checkout is generating a checkout token using the following method: [generateToken()](https://commercejs.com/docs/api/#generate-token). To accomplish this you are going to update your Vuex store; As a quick reminder, [Vuex](https://vuex.vuejs.org/) is a state management store for Vue and comes with Nuxt if the option is selected.. Go back into your `store/index.js` file add a new property on the state object called: `token` which will equal an empty object and add a new action: `genCheckoutToken()`. This action will do as the name says and create a token to be used to capture a checkout order. `generateToken()` expects one parameter, which could be a cart's id, a product's id, or a permalink. The second parameter should be an object that states the type of id you are passing as the first parameter, in this scenario you will be using your cart's id. If all checks out and the request is successful; simply commit the token to a `setToken` mutation, which will just set the state's token object to the response of `generateToken()`.
 
 ``` js
 
