@@ -17,7 +17,7 @@ If you followed the previous guides you first created a simple Nuxt application 
 
 ## This guide will cover
 
-1. (Optional) Creating shipping zones and adding available zones to products
+1. *Optional* Creating shipping zones and adding available zones to products
 2. Create Checkout page
 3. Create a form for customer information
 4. Form validation with Vuetify
@@ -60,7 +60,7 @@ You have just set up a shipping zone, now to add the zone to your products. Go t
 
 ## 1. Generating a checkout token:
 
-One of the key parts to capturing a checkout is generating a checkout token using the following method: [generateToken()](https://commercejs.com/docs/api/#generate-token). For this, you will go back into your `store/index.js` file add a new propert on the state object called: `token` which will equal an empty object and add a new action: `genCheckoutToken()`. This action will do as the name says and create a token to be used to capture a checkout order. `generateToken()` expects one parameter, which could be a cart's id, a product's id, or a permalink. The second parameter should be an object that states the type of id you are passing as the first parameter, in this scenario you will be using your cart's id. If all checks out and the reqest is successful; simply commit the token to a `setToken` mutation, which will just set the state's token object to the response of `generateToken()`.
+One of the key parts to capturing a checkout is generating a checkout token using the following method: [generateToken()](https://commercejs.com/docs/api/#generate-token). For this, you will go back into your `store/index.js` file add a new property on the state object called: `token` which will equal an empty object and add a new action: `genCheckoutToken()`. This action will do as the name says and create a token to be used to capture a checkout order. `generateToken()` expects one parameter, which could be a cart's id, a product's id, or a permalink. The second parameter should be an object that states the type of id you are passing as the first parameter, in this scenario you will be using your cart's id. If all checks out and the request is successful; simply commit the token to a `setToken` mutation, which will just set the state's token object to the response of `generateToken()`.
 
 ``` js
 
@@ -196,7 +196,7 @@ Your users will need some sort of form or inputs to be able to enter the necessa
 
 ## 2. BillingDetails.vue
 
-Create a new Vue file named: `BillingDetails.vue` and put it in the `/components` directory. For this component you will use Vuetify's [VForm](https://vuetifyjs.com/en/components/forms/) compoonent that will contain a few [VTextField](https://vuetifyjs.com/en/components/text-fields/)'s, a couple [VSelect](https://vuetifyjs.com/en/components/selects/)'s and a VBtn component at the end to submit the order and capture the checkout.  
+Create a new Vue file named: `BillingDetails.vue` and put it in the `/components` directory. For this component you will use Vuetify's [VForm](https://vuetifyjs.com/en/components/forms/) component that will contain a few [VTextField](https://vuetifyjs.com/en/components/text-fields/)'s, a couple [VSelect](https://vuetifyjs.com/en/components/selects/)'s and a VBtn component at the end to submit the order and capture the checkout.  
 
 ``` js
 // BillingDetails.vue
