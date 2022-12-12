@@ -25,7 +25,7 @@
     "@chec/commerce.js": "^2.0.1",
     "@nuxtjs/dotenv": "^1.4.0",
     "cross-env": "^5.2.0",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "nuxt": "^2.0.0",
     "vuetify": "^2.2.15"
   },
